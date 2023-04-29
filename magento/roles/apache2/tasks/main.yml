@@ -1,0 +1,61 @@
+- name: Install Apache2
+  apt:
+    name:
+      - apache2
+    state: latest
+    update_cache: true
+
+- name: Create SSH and SFTP User
+  user:
+    name={{user}}
+    password={{password | password_hash('sha512')}}
+    shell=/bin/bash
+    update_password=on_create
+
+- name: Change in SSHD file
+  replace:
+    path: /etc/ssh/sshd_config
+    regexp: 'PasswordAuthentication no'
+    replace: 'PasswordAuthentication yes'
+
+- name: Restart SSH
+  service:
+    name: ssh
+    state: restarted
+
+- name: Copy apache config file HTTP
+  shell:
+    cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/000-default.conf.bak
+
+- name: Change User in envvars file
+  replace:
+    path: /etc/apache2/envvars
+    regexp: 'www-data'
+    replace: '{{user}}'
+
+- name: Change in config file
+  replace:
+    path: /etc/apache2/sites-available/000-default.conf
+    regexp: 'DocumentRoot /var/www/html'
+    replace: 'DocumentRoot /home/{{user}}/public_html/magento'
+
+- name: Change in apache.conf
+  replace:
+    path: /etc/apache2/apache2.conf
+    regexp: '<Directory /var/www/>'
+    replace: '<Directory /home/{{user}}/public_html/magento>'
+
+- name: Change in apache.conf
+  replace:
+    path: /etc/apache2/apache2.conf
+    regexp: 'AllowOverride None'
+    replace: 'AllowOverride All'
+
+- name: Enabling the rewrite module
+  shell: a2enmod rewrite
+
+- name: Restart Apache2
+  service:
+    name: apache2
+    state: restarted
+

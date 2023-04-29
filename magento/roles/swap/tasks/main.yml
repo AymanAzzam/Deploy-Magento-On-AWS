@@ -1,0 +1,30 @@
+- name: Create Swap File
+  shell:
+    sudo fallocate -l 4G /swapfile
+
+- name: Change permission of Swapfile
+  file:
+    path: /swapfile
+    mode: 0600
+
+- name: Make it Swap
+  shell:
+    sudo mkswap /swapfile
+
+- name: Enable Swap
+  shell:
+    sudo swapon /swapfile
+
+- name: Write swap entry in fstab
+  mount: 
+    name=none
+    src=/swapfile
+    fstype=swap
+    opts=sw
+    passno=0
+    dump=0
+    state=present
+
+- name: Change Swappiness
+  shell:
+    sysctl vm.swappiness=10

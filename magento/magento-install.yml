@@ -1,0 +1,13 @@
+- hosts: localhost
+  become: True
+  gather_facts: false
+  vars_files:
+   var.yml
+
+  roles:
+    - swap
+    - apache2
+    - php
+    - mysql-client
+    - magento2
+    - elasticsearch

@@ -1,0 +1,7 @@
+- name: Install Mysql-Client
+  apt:
+    name:
+      - mysql-client
+    state: latest
+    update_cache: true
+

@@ -1,0 +1,17 @@
+# Local .terraform directories
+**/.terraform/*
+**/*.terraplan
+**/*.tfstate
+**/*.tfstate.*
+**.terraform*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# lock files
+*.terraform.lock.*
+
+# secrets data
+secrets.json
+deployment.txt
