@@ -1,11 +1,11 @@
 # Magento Server Variables
 
 variable "access_key" {
-  default = "AKIA36Z7DCJ5N7ZOYSSO"
+  default = "Enter your key here"
 }
  
 variable "secret_key" {
-  default = "C5hstyT8MCHHcYZWVhBG5CgJUG5yZPWfUlKShAEF"
+  default = "Enter your key here"
 }
  
 variable "type" {
