@@ -5,9 +5,10 @@ resource "aws_db_instance" "magento_rds" {
   engine_version         = var.db_engine_version
   instance_class         = "db.t2.micro"
   port                   = 3306
-  vpc_security_group_ids = [aws_security_group.db_security_group.id]
+  db_subnet_group_name   = aws_db_subnet_group.db_subnets.name
+  vpc_security_group_ids = [module.db_security_group.security_group_id]
   identifier             = var.db_identifier
-  db_name                   = var.db_name
+  db_name                = var.db_name
   username               = var.db_user
   password               = random_password.db_password.result
   max_allocated_storage  = 100
@@ -31,4 +32,9 @@ resource "random_password" "db_password" {
   special = false
   min_lower = 8
   min_upper = 8
+}
+
+resource "aws_db_subnet_group" "db_subnets" {
+  name       = "db-subnets"
+  subnet_ids = module.vpc.private_subnets
 }

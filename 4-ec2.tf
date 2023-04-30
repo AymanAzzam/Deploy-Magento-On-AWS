@@ -2,7 +2,8 @@ resource "aws_instance" "magento_instance" {
   ami             = data.aws_ami.ubuntu.id
   instance_type   = var.type
   key_name        = var.key_name
-  vpc_security_group_ids = [aws_security_group.magento_security_group.id]
+  subnet_id = module.vpc.public_subnets[0]
+  vpc_security_group_ids = [module.magento_security_group.security_group_id]
   tags = {
     Name = var.ec2_tag
   }
@@ -33,9 +34,7 @@ resource "aws_instance" "magento_instance" {
   }
 
   provisioner "remote-exec" {
-      inline = [
-          "ansible-playbook /tmp/magento/magento-install.yml",
-        ]
+      inline = ["ansible-playbook /tmp/magento/magento-install.yml"]
   }
 }
 
@@ -60,8 +59,4 @@ data "aws_ami" "ubuntu" {
 resource "aws_eip" "Instance_IP" {
   instance = aws_instance.magento_instance.id
   vpc = true
- 
-  tags = {
-    Name = "Instance-IP"
-  }
 }
