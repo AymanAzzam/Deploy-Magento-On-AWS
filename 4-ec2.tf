@@ -5,7 +5,7 @@ resource "aws_instance" "magento_instance" {
   subnet_id = module.vpc.public_subnets[0]
   vpc_security_group_ids = [module.magento_security_group.security_group_id]
   tags = {
-    Name = var.ec2_tag
+    Name = "Magento Instance"
   }
  
 # Change the size of created root volume.
@@ -25,16 +25,36 @@ resource "aws_instance" "magento_instance" {
   }
 
   provisioner "remote-exec" {
-    script = "magento/install-ansible.sh"
+    script = "scripts/install-ansible.sh"
   }
 
   provisioner "file" {
-    source      = "magento"
-    destination = "/tmp/magento"
+    source      = "scripts"
+    destination = "/tmp/scripts"
   }
 
   provisioner "remote-exec" {
-      inline = ["ansible-playbook /tmp/magento/magento-install.yml"]
+      inline = ["ansible-playbook /tmp/scripts/magento-install.yml"]
+  }
+}
+
+resource "aws_instance" "varnish_instance" {
+  ami             = data.aws_ami.ubuntu.id
+  instance_type   = var.type
+  key_name        = var.key_name
+  subnet_id = module.vpc.public_subnets[0]
+  vpc_security_group_ids = [module.varnish_security_group.security_group_id]
+  user_data = file("scripts/install-varnish.sh")
+  tags = {
+    Name = "Varnish Instance"
+  }
+ 
+# Change the size of created root volume.
+  root_block_device {
+    delete_on_termination = true
+    encrypted             = false
+    volume_size           = 30
+    volume_type           = "gp2"
   }
 }
 

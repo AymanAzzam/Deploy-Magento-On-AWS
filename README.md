@@ -10,7 +10,7 @@ An IaC using terraform to host Magento 2 application on AWS
         * Put the pem file in the keys folder
 2. Magento Application
     * Create a key pair
-        * Put the the values in **magento/var.yml**
+        * Put the the values in **scripts/var.yml**
 
 ## Steps
 1. Add The created data from the prerequisites of aws in **99-variables.tf**
@@ -22,10 +22,10 @@ An IaC using terraform to host Magento 2 application on AWS
 2. Add username and password for magento admin panel in **99-variables.tf**
     * magento_admin_user (ex. admin)
     * magento_admin_password (ex. admin123)
-3. Add The created data from the prerequisites of magento application in **magento/var.yml**
+3. Add The created data from the prerequisites of magento application in **scripts/var.yml**
     * public_key
     * private_key
-4. Add username and password for a new user on the magento server in **magento/var.yml**
+4. Add username and password for a new user on the magento server in **scripts/var.yml**
     * user (ex. magento)
     * password (ex. magento)
 5. Run terraform command

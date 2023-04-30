@@ -56,6 +56,38 @@ module "magento_security_group" {
   ]
 }
 
+module "varnish_security_group" {
+  source = "terraform-aws-modules/security-group/aws"
+  version = "~> v4.0"
+  name        = "varnish-security-group"
+  description = "Allowing ssh and http traffic"
+  vpc_id      = module.vpc.vpc_id
+
+  ingress_with_cidr_blocks = [
+    {
+      from_port = 22
+      to_port = 22
+      protocol = "tcp"
+      cidr_blocks = "0.0.0.0/0"
+    },
+    {
+      from_port = 6081
+      to_port = 6081
+      protocol = "tcp"
+      cidr_blocks = "0.0.0.0/0"
+    },
+  ]
+
+  egress_with_cidr_blocks = [
+    {
+      from_port = 0
+      to_port = 0
+      protocol = "-1"
+      cidr_blocks = "0.0.0.0/0"
+    }
+  ]
+}
+
 module "db_security_group" {
   source = "terraform-aws-modules/security-group/aws"
   version = "~> v4.0"

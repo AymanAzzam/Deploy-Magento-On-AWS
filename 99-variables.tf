@@ -1,11 +1,11 @@
 # Magento Server Variables
 
 variable "access_key" {
-  default = "Add your access key here"
+  default = "AKIA36Z7DCJ5N7ZOYSSO"
 }
  
 variable "secret_key" {
-  default = "Add your secret access key here"
+  default = "C5hstyT8MCHHcYZWVhBG5CgJUG5yZPWfUlKShAEF"
 }
  
 variable "type" {
@@ -24,10 +24,6 @@ variable "magento_pem_file_path" {
   default = "keys/magento_key.pem"
 }
  
-variable "ec2_tag" {
-  default = "Magento Instance"
-}
-
 # Magento Deployment Variables
 
 variable "magento_admin_user" {

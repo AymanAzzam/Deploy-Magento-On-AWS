@@ -1,5 +1,0 @@
-user: "magento"
-password: "magento"
-magento_version: "2.4"
-public_key: "Add the public_key of your magento account here"
-private_key: "Add the private_key of your magento account here"

@@ -1,0 +1,5 @@
+user: "magento"
+password: "magento"
+magento_version: "2.4"
+public_key: "13438daae73eefa67e1adb0820170e43"
+private_key: "7df4e52b71eadbc4a3af277774199450"
