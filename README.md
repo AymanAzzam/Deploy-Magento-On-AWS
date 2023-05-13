@@ -6,6 +6,7 @@ An IaC using terraform to host Magento 2 application on AWS
     * Create **Access Key Id** and **Secret Access Key** for a user with the permissions
         * AmazonEC2FullAccess
         * AmazonRDSFullAccess
+        * SecretsManagerReadWrite
     * Create a key pair called **magento_key**
         * Put the pem file in the keys folder
 2. Magento Application
@@ -25,12 +26,13 @@ An IaC using terraform to host Magento 2 application on AWS
 3. Add The created data from the prerequisites of magento application in **scripts/var.yml**
     * public_key
     * private_key
-4. Add username and password for a new user on the magento server in **scripts/var.yml**
-    * user (ex. magento)
-    * password (ex. magento)
-5. Run terraform command
+4. Run terraform command
 ```
 terraform init
 terraform plan -out="magento.tfplan"
 terraform apply magento.tfplan
 ```
+5. Add database info in the file **scripts/magento-deployment.sh**
+5. Connect to the magento instance
+6. Run the file **scripts/magento-deployment.sh** on the magento instance
+7. Access the application using the DNS name of load balancer 

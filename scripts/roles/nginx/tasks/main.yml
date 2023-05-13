@@ -1,0 +1,43 @@
+- name: Create SSH and SFTP User
+  user:
+    name=magento
+    password=magento
+    shell=/bin/bash
+    update_password=on_create
+
+- name: Change in SSHD file
+  replace:
+    path: /etc/ssh/sshd_config
+    regexp: 'PasswordAuthentication no'
+    replace: 'PasswordAuthentication yes'
+
+- name: Restart SSH
+  service:
+    name: ssh
+    state: restarted
+
+- name: Install nginx
+  apt:
+    name:
+      - nginx
+    state: latest
+    update_cache: true
+
+- name: start nginx
+  service:
+      name: nginx
+      state: started
+  become: yes
+
+- name: copy the nginx config file and restart nginx
+  copy:
+    src: static_site.cfg
+    dest: /etc/nginx/sites-available/static_site.cfg
+  become: yes
+
+- name: create symlink
+  file:
+    src: /etc/nginx/sites-available/static_site.cfg
+    dest: /etc/nginx/sites-enabled/default
+    state: link
+  become: yes

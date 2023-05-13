@@ -7,8 +7,8 @@
 
 - name: Create SSH and SFTP User
   user:
-    name={{user}}
-    password={{password | password_hash('sha512')}}
+    name=magento
+    password=magento
     shell=/bin/bash
     update_password=on_create
 
@@ -31,19 +31,19 @@
   replace:
     path: /etc/apache2/envvars
     regexp: 'www-data'
-    replace: '{{user}}'
+    replace: 'magento'
 
 - name: Change in config file
   replace:
     path: /etc/apache2/sites-available/000-default.conf
     regexp: 'DocumentRoot /var/www/html'
-    replace: 'DocumentRoot /home/{{user}}/public_html/magento'
+    replace: 'DocumentRoot /home/magento/public_html/magento'
 
 - name: Change in apache.conf
   replace:
     path: /etc/apache2/apache2.conf
     regexp: '<Directory /var/www/>'
-    replace: '<Directory /home/{{user}}/public_html/magento>'
+    replace: '<Directory /home/magento/public_html/magento>'
 
 - name: Change in apache.conf
   replace:

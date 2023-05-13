@@ -34,6 +34,16 @@ resource "random_password" "db_password" {
   min_upper = 8
 }
 
+resource "aws_secretsmanager_secret" "db_password" {
+  name                    = "magento/db_password"
+  recovery_window_in_days = 0
+}
+resource "aws_secretsmanager_secret_version" "db_password" {
+  secret_id      = aws_secretsmanager_secret.db_password.id
+  secret_string  = random_password.db_password.result
+  version_stages = ["AWSCURRENT"]
+}
+
 resource "aws_db_subnet_group" "db_subnets" {
   name       = "db-subnets"
   subnet_ids = module.vpc.private_subnets

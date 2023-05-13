@@ -6,7 +6,7 @@
 
   roles:
     - swap
-    - apache2
+    - nginx
     - php
     - mysql-client
     - magento2

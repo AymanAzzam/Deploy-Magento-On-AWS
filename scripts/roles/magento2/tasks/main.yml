@@ -3,26 +3,31 @@
 
 - name: Create a directory
   file:
-    path: /home/{{user}}/public_html
+    path: /home/magento/public_html
     state: directory
 
 - name: Set Magento Access Key
   command: composer global config http-basic.repo.magento.com "{{ public_key }}" "{{ private_key }}"
 
 - name: Download Magento2 using Composer
-  command: sudo composer create-project -n --repository=https://repo.magento.com/ magento/project-community-edition:{{magento_version}} /home/{{user}}/public_html/magento
+  command: sudo composer create-project -n --repository=https://repo.magento.com/ magento/project-community-edition:2.4 /home/magento/public_html/magento
 
 - name: Changing the ownership of magento files
   file:
-    path: /home/{{user}}
+    path: /home/magento
     state: directory
-    owner: "{{user}}"
-    group: "{{user}}"
+    owner: "magento"
+    group: "magento"
     recurse: yes
 
 - name: Changing the file permissions of magento files
   file:
-    path: /home/"{{user}}"/public_html/magento
+    path: /home/"magento/public_html/magento
     state: directory
     mode: '0755'
 
+- name: restart nginx
+  service:
+    name: nginx
+    state: restarted
+  become: yes
